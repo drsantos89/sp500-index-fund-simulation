@@ -13,4 +13,4 @@ for resource in resources:
         data = pd.read_csv(resource.descriptor['path'])
         print (data)
         
-data.to_csv('data.csv')
+data.to_csv('./data/data.csv')
