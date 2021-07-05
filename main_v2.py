@@ -35,7 +35,7 @@ def run(params):
                 sim = Sim(config, data)
                 sim.run()
 
-                i_res_all = i_l*len(params['years']) + \
+                i_res_all = i_l*len(params['years'])*len(params['months']) + \
                     i_y*len(params['months']) + i_m
                 res_all.at[i_res_all, 'len'] = length
                 res_all.at[i_res_all, 'year'] = year
