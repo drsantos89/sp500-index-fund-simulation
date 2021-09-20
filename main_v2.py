@@ -9,8 +9,7 @@ import tqdm
 from src.sim import Sim
 
 def run(params):
-    data = pd.read_csv('./data/data.csv')
-    data['pct'] = data['SP500'].pct_change() + 1
+    data = pd.read_csv('./data/sp500.csv')
 
     res = pd.DataFrame(
         columns=['length','mean','median','std','iqr',
@@ -24,25 +23,29 @@ def run(params):
     for i_l, length in enumerate(params['lengths']):
         for i_y, year in enumerate(params['years']):
             for i_m, month in enumerate(params['months']):
-                config={'buy': params['buy'],
-                        'buy_year': year,
-                        'buy_month': month,
-                        'sell_year': year+length,
-                        'sell_month': month,
-                        'dividends': params['dividends'],
-                        'inflation_corrected': False}
-                
-                sim = Sim(config, data)
-                sim.run()
+                try:
+                    config={'buy': params['buy'],
+                            'buy_year': year,
+                            'buy_month': month,
+                            'sell_year': year+length,
+                            'sell_month': month,
+                            'dividends': params['dividends'],
+                            'inflation_corrected': False}
+                    
+                    sim = Sim(config, data)
+                    sim.run()
 
-                i_res_all = i_l*len(params['years'])*len(params['months']) + \
-                    i_y*len(params['months']) + i_m
-                res_all.at[i_res_all, 'len'] = length
-                res_all.at[i_res_all, 'year'] = year
-                res_all.at[i_res_all, 'month'] = month
-                res_all.at[i_res_all, 'gain'] = sim.gain
-                res_all.at[i_res_all, 'annualized_returns'] = sim.annualized_returns
-                
+                    i_res_all = i_l*len(params['years'])*len(params['months']) + \
+                        i_y*len(params['months']) + i_m
+                    res_all.at[i_res_all, 'len'] = length
+                    res_all.at[i_res_all, 'year'] = year
+                    res_all.at[i_res_all, 'month'] = month
+                    res_all.at[i_res_all, 'gain'] = sim.gain
+                    res_all.at[i_res_all, 'annualized_returns'] = sim.annualized_returns
+                except Exception as e:
+                    print(length, year, month, e)
+                    res_all.at[i_res_all, :] = np.nan
+                    
         res.at[i_l, 'length'] = length
         res.at[i_l, 'mean'] = np.mean(res_all[res_all['len']==length]['gain'])
         res.at[i_l, 'median'] = np.median(res_all[res_all['len']==length]['gain'])
