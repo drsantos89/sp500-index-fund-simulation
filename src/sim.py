@@ -50,13 +50,11 @@ class Sim(object):
         
         row_start, row_end = self._get_rows()
         
-        self.invested = 0
         self.portfolio = 0
         self.previous_year = 0
         self.annualized_returns = [1]
 
         for i, i_row in enumerate(range(row_start, row_end)):
-            self.invested += 1
             self.portfolio += 1
                     
             self.portfolio *= self.data.loc[i_row,'pct']

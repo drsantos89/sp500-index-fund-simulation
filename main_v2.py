@@ -9,13 +9,22 @@ import tqdm
 from src.sim import Sim
 
 def run(params):
+    """simulates the investment on the S&P500 index similar to
+    investing on index funds
+
+    Parameters
+    ----------
+    params : dict
+        contrain the parameters to run the simulation
+    """
+    #load data source
     data = pd.read_csv('./data/sp500.csv')
 
+    #create empty dataframe to store results
     res = pd.DataFrame(
         columns=['length','mean','median','std','iqr',
                  'wins','losses','zero','total','wins/losses',
                  'a_r_mean','a_r_median','a_r_std'])
-    
     res_all = pd.DataFrame(
         columns=['len', 'year', 'month',
                  'gain', 'annualized_returns'])
@@ -34,7 +43,7 @@ def run(params):
                     
                     sim = Sim(config, data)
                     sim.run()
-
+                    # calculates right row to store results
                     i_res_all = i_l*len(params['years'])*len(params['months']) + \
                         i_y*len(params['months']) + i_m
                     res_all.at[i_res_all, 'len'] = length
@@ -43,9 +52,10 @@ def run(params):
                     res_all.at[i_res_all, 'gain'] = sim.gain
                     res_all.at[i_res_all, 'annualized_returns'] = sim.annualized_returns
                 except Exception as e:
+                    # happes usually when the length goes beyond the data (2021+)
                     print(length, year, month, e)
                     res_all.at[i_res_all, :] = np.nan
-                    
+    
         res.at[i_l, 'length'] = length
         res.at[i_l, 'mean'] = np.mean(res_all[res_all['len']==length]['gain'])
         res.at[i_l, 'median'] = np.median(res_all[res_all['len']==length]['gain'])
