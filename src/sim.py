@@ -38,7 +38,7 @@ class Sim(object):
             self.portfolio *= self.data.loc[i_row,'pct']
             
             if self.config['dividends']:
-                dividend_pct = self.data.loc[i_row,'Dividend']/self.data.loc[i_row,'SP500']/12+1
+                dividend_pct = self.data.loc[i_row,'Dividend']/12+1
                 self.portfolio *= dividend_pct
             
             if (i+1)%12==0:
@@ -61,7 +61,7 @@ class Sim(object):
                     
             self.portfolio *= self.data.loc[i_row,'pct']
             if self.config['dividends']:
-                dividend_pct = self.data.loc[i_row,'Dividend']/self.data.loc[i_row,'SP500']/12+1
+                dividend_pct = self.data.loc[i_row,'Dividend']/12+1
                 self.portfolio *= dividend_pct
                 
             if (i+1)%12==0:
