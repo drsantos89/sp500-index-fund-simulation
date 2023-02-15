@@ -1,3 +1,4 @@
+"""Download data from datahub.io and save it to data folder."""
 import datapackage
 import pandas as pd
 

@@ -1,14 +1,18 @@
+"""Script to generate figures for the report."""
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 sns.set()
 
 
-def sp500_level(data=None):
+def sp500_level(data: pd.DataFrame) -> None:
+    """Plot the level of the S&P500 index."""
     sns.lineplot(data["Date"].astype("datetime64[ns]"), data["SP500"])
 
 
-def per_year_boxplot(data=None):
+def per_year_boxplot(data: pd.DataFrame) -> None:
+    """Plot the boxplot of the annualized returns per year."""
     fig, ax = plt.subplots(figsize=(6.4 * 2, 4.8))
     sns.boxplot(
         x=data[data["len"] == 1]["year"],
@@ -18,7 +22,8 @@ def per_year_boxplot(data=None):
     plt.xticks(rotation=90)
 
 
-def per_month_boxplot(data=None):
+def per_month_boxplot(data: pd.DataFrame) -> None:
+    """Plot the boxplot of the annualized returns per month."""
     fig, ax = plt.subplots(figsize=(6.4 * 2, 4.8))
     sns.boxplot(
         x=data[data["len"] == 1]["month"],
@@ -28,7 +33,8 @@ def per_month_boxplot(data=None):
     plt.xticks(rotation=90)
 
 
-def years_boxplot(data=None, year=None):
+def years_boxplot(data: pd.DataFrame, year: int) -> None:
+    """Plot the boxplot of the annualized returns per year."""
     date = (
         data[data.len == year]
         .apply(lambda x: f"{x['year']}-{x['month']}", axis=1)
@@ -37,7 +43,8 @@ def years_boxplot(data=None, year=None):
     plt.plot(date, data[data.len == year]["gain"])
 
 
-def over_the_years(data, length):
+def over_the_years(data: pd.DataFrame, length: int) -> None:
+    """Plot the gain over the years."""
     date = (
         data[data.len == length]
         .apply(lambda x: f"{x['year']}-{x['month']}", axis=1)

@@ -1,3 +1,4 @@
+"""Main file to run the simulation."""
 import argparse
 import json
 
@@ -10,8 +11,7 @@ pd.options.display.float_format = "{:,.2f}".format
 
 
 def run(params):
-    """simulates the investment on the S&P500 index similar to
-    investing on index funds
+    """Simulate the investment on the S&P500 index similar to investing on index funds.
 
     Parameters
     ----------
@@ -108,5 +108,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("config_file", help="path to config file")
     args = parser.parse_args()
-    params = json.load(open("./config/" + args.config_file + ".json", "r"))
+    params = json.load(open("./config/" + args.config_file + ".json"))
     run(params)

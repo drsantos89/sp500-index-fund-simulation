@@ -1,21 +1,26 @@
-import pytest
+"""Test the functions in the main module."""
 
 
-def test_sim():
-    return None
+def test_sim() -> None:
+    """Test the simulation class."""
+    pass
 
 
-def test_return():
-    return None
+def test_return() -> None:
+    """Test the return function."""
+    pass
 
 
-def test_annualized_returns():
-    return None
+def test_annualized_returns() -> None:
+    """Test the annualized returns function."""
+    pass
 
 
-def test_lump_sum():
-    return None
+def test_lump_sum() -> None:
+    """Test the lump sum function."""
+    pass
 
 
-def test_dca():
-    return None
+def test_dca() -> None:
+    """Test the dollar cost average function."""
+    pass

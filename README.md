@@ -6,14 +6,14 @@ https://wire.insiderfinance.io/what-to-expect-from-investing-in-s-p-500-index-fu
 ## How to run:
 
     python main_v2.py <config>
-  
+
 where config is the name of the config file in the config folder.
 
 ## Config file structure:
 
 - buy:
   - lumpsum: simulates a lump-sum investment
-  - dca: simulats dolar-cost-averaging  
+  - dca: simulats dolar-cost-averaging
 - dividends (reinvest)
    - true
    - false

@@ -1,12 +1,24 @@
+"""Scimulate the performance of a portfolio."""
+from typing import Any
+
 import numpy as np
+import pandas as pd
 
 
-class Sim(object):
-    def __init__(self, config, data):
+class Sim:
+    """Simulate the performance of a portfolio."""
+
+    def __init__(self, config: dict[str, Any], data: pd.DataFrame) -> None:
         self.config = config
         self.data = data
 
-    def run(self):
+        self.portfolio: float = 1
+        self.previous_year: float = 0
+        self.gain: float = 0
+        self.annualized_returns: list[float] = []
+
+    def run(self) -> None:
+        """Run the simulation."""
         if self.config["buy"] == "lump_sum":
             self._lump_sum()
         elif self.config["buy"] == "dca":
@@ -15,7 +27,8 @@ class Sim(object):
             raise NotImplementedError
         self._annualized_returns()
 
-    def _get_rows(self):
+    def _get_rows(self) -> tuple[int, int]:
+        """Get the start and end row of the simulation period."""
         b_y = self.config["buy_year"]
         b_m = self.config["buy_month"]
         s_y = self.config["sell_year"]
@@ -26,7 +39,8 @@ class Sim(object):
 
         return row_start, row_end
 
-    def _lump_sum(self):
+    def _lump_sum(self) -> None:
+        """Simulate a lump sum investment."""
         row_start, row_end = self._get_rows()
 
         self.portfolio = 1
@@ -44,12 +58,13 @@ class Sim(object):
 
         self.gain = (self.portfolio - 1) * 100
 
-    def _dollar_cost_average(self):
+    def _dollar_cost_average(self) -> None:
+        """Simulate a dollar cost average investment."""
         row_start, row_end = self._get_rows()
 
         self.portfolio = 0
         self.previous_year = 0
-        self.annualized_returns = [1]
+        self.annualized_returns = [1.0]
 
         for i, i_row in enumerate(range(row_start, row_end)):
             self.portfolio += 1
@@ -67,7 +82,8 @@ class Sim(object):
 
         self.gain = (self.portfolio / (row_end - row_start) - 1) * 100
 
-    def _annualized_returns(self):
+    def _annualized_returns(self) -> None:
+        """Calculate the annualized returns."""
         self.annualized_returns = (
             np.array(self.annualized_returns[1:])
             / np.array(self.annualized_returns[:-1])
